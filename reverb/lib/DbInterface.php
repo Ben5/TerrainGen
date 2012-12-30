@@ -1,18 +1,13 @@
 <?php
-    
-define("DB_HOST", "localhost");
-define("DB_USER", "db_user");
-define("DB_PASS", "wpe84u9384u5");
-define("DB_DB",   "wine");
 
 class DbInterface
 {
-    private static $readConn;
+    private static $connection;
 
     public static function
     Connect()
     {
-        $conn = new mysqli( DB_HOST, DB_USER, DB_PASS, DB_DB);
+        $conn = new mysqli( SiteConfig::DB_HOST, SiteConfig::DB_USER, SiteConfig::DB_PASS, SiteConfig::DB_DB);
     
         if($conn === FALSE)
         {
@@ -24,14 +19,14 @@ class DbInterface
    
 
     public static function
-    NewReadOnlyQuery($sql)
+    NewQuery($sql)
     {
-        if(!self::$readConn)
+        if(!self::$connection)
         {
-            self::$readConn = self::Connect();
+            self::$connection = self::Connect();
         }
 
-        return new DbQuery($sql, self::$readConn); 
+        return new DbQuery($sql, self::$connection); 
     }
 }
 
@@ -176,5 +171,3 @@ class DbQuery
         return FALSE;
     } 
 }
-
-?>
