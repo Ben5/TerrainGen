@@ -1,8 +1,8 @@
 <?php
     
 define("DB_HOST", "localhost");
-define("DB_USER", "root");
-define("DB_PASS", "supersmiffy");
+define("DB_USER", "db_user");
+define("DB_PASS", "wpe84u9384u5");
 define("DB_DB",   "wine");
 
 class DbInterface
