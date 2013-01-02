@@ -94,59 +94,88 @@ class NeighbourManager
     GetNextTerrainType(
         $random,
         TerrainTypeBase $previousTerrainType,
-        TerrainTypeBase $otherPreviousTerrainType = NULL)
+        TerrainTypeBase $otherPreviousTerrainType = null)
     {
         $previousTerrainTypeName = $previousTerrainType->GetType();
         if( !isset($this->neighbourDictionary[$previousTerrainTypeName]) ) 
         {
-            trigger_error("no neighbours defined for terrain type: $previousTerrainType->GetType()");
+            trigger_error("no neighbours defined for terrain type: $previousTerrainTypeName");
         }
 
-        $previousTerrainTypeName = $previousTerrainType->GetType();
-        $neighbours = array(
-            $previousTerrainTypeName =>
-                $this->neighbourDictionary[$previousTerrainTypeName] );
+        $neighbours = array( $this->neighbourDictionary[$previousTerrainTypeName] );
         
+
         if( !is_null($otherPreviousTerrainType))
         {
             $otherPreviousTerrainTypeName = $otherPreviousTerrainType->GetType();
-            if( isset($this->neighbourDictionary[$otherPreviousTerrainTypeName]) )
+
+            if( !isset($this->neighbourDictionary[$otherPreviousTerrainTypeName]) )
             {
-                $otherNeighbours = array(
-                    $otherPreviousTerrainTypeName =>
-                         $this->neighbourDictionary[$otherPreviousTerrainTypeName]);
-               //print_r($neighbours);
-               //echo "<br><br>";
-               //print_r($otherNeighbours);
-                $neighbours = array_intersect($neighbours, $otherNeighbours);
+                trigger_error("no neighbours defined for terrain type: $otherPreviousTerrainTypeName");
             }
+
+            $otherNeighbours = array($this->neighbourDictionary[$otherPreviousTerrainTypeName]);
+           //print_r($neighbours);
+           //echo "<br><br>";
+           //print_r($otherNeighbours);
+
+
+//            $neighbours = array_intersect($neighbours, $otherNeighbours);
+            $neighbourIntersection = array();
+            
+            foreach($neighbours as $neighbourArray)
+            {
+                foreach($neighbourArray as $neighbour)
+                {
+                    foreach($otherNeighbours as $otherNeighbourArray)
+                    {
+                        foreach($otherNeighbourArray as $otherNeighbour)
+                        {
+                            if($neighbour->GetNeighbourTypeName() == $otherNeighbour->GetNeighbourTypeName())
+                            {
+                                $neighbourIntersection[] = $neighbour;
+                            }
+                        }
+                    }
+                }
+            }
+
+            $neighbours = array($neighbourIntersection);
         }
 
-       // $random = rand(1,10) / 10;
-        $type = NULL;
+        $type = null;
         $cumulativeProbability = 0;
 
-        foreach($neighbours as $typeName => $neighbourArray)
+        foreach($neighbours as $neighbourArray)
         {
             foreach($neighbourArray as $neighbour)
             {
                 $cumulativeProbability += $neighbour->GetNeighbourProbability();
+
                 if($random <= $cumulativeProbability)
                 {
                     $type = clone $neighbour->GetNeighbourType();
-                    $ben = 23;
+                    break 2;
                 }
             }
         }
-
     
         if( is_null($type) )
         {
-            $type = $previousTerrainType;
+            $maxProbability = 0;
+
+            foreach($neighbours as $neighbourArray)
+            {
+                foreach($neighbourArray as $neighbour)
+                {
+                    if($neighbour->GetNeighbourProbability() > $maxProbability)
+                    {
+                        $maxProbability = $neighbour->GetNeighbourProbability();
+                        $type = clone $neighbour->GetNeighbourType();
+                    }
+                }
+            }
         }
-
-        // todo! make $type an object of the right type! (and call this function!)
-
 
         return $type;
     }

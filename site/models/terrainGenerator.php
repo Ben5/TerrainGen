@@ -14,10 +14,15 @@ class TerrainGenerator
     // set up the probabilities of changing terrain type
     // note that the chances of not changing are left implicit so as to not require changing 2
     // numbers for each adjustment.
-    const OCEAN_TO_BEACH = 0.3;
-    const BEACH_TO_GRASS = 0.8;
-    const BEACH_TO_OCEAN = 0.8;
-    const GRASS_TO_BEACH = 0.3;
+    const OCEAN_TO_BEACH = 0.5;
+    const OCEAN_TO_OCEAN = 0.5;
+
+    const BEACH_TO_GRASS = 0.4;
+    const BEACH_TO_BEACH = 0.2;
+    const BEACH_TO_OCEAN = 0.4;
+    
+    const GRASS_TO_BEACH = 0.5;
+    const GRASS_TO_GRASS = 0.5;
 
     public static function 
     GenerateTerrain()
@@ -27,9 +32,14 @@ class TerrainGenerator
         $neighbourManager = new NeighbourManager();
     
         $neighbourManager->AddTerrainType( "ocean", new Neighbour("beach", new BeachTerrain(), self::OCEAN_TO_BEACH) );
+        $neighbourManager->AddTerrainType( "ocean", new Neighbour("ocean", new BeachTerrain(), self::OCEAN_TO_OCEAN) );
+
         $neighbourManager->AddTerrainType( "beach", new Neighbour("ocean", new OceanTerrain(), self::BEACH_TO_OCEAN) );
         $neighbourManager->AddTerrainType( "beach", new Neighbour("grass", new GrassTerrain(), self::BEACH_TO_GRASS) );
+        $neighbourManager->AddTerrainType( "beach", new Neighbour("beach", new GrassTerrain(), self::BEACH_TO_BEACH) );
+        
         $neighbourManager->AddTerrainType( "grass", new Neighbour("beach", new BeachTerrain(), self::GRASS_TO_BEACH) );
+        $neighbourManager->AddTerrainType( "grass", new Neighbour("grass", new BeachTerrain(), self::GRASS_TO_GRASS) );
 
         $neighbourManager->PopulateNeighbourObjects();
 
@@ -48,10 +58,10 @@ class TerrainGenerator
                 }
                 
                 $previousSquare = ($widthIndex === 0 ?
-                                            NULL :
+                                            null :
                                             $terrainArray[$heightIndex][$widthIndex-1]);
                 $aboveSquare    = ($heightIndex === 0 ? 
-                                            NULL :
+                                            null :
                                             $terrainArray[$heightIndex-1][$widthIndex]);
                 // first square of row
                 if($widthIndex === 0)
