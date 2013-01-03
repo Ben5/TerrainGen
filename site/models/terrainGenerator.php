@@ -14,15 +14,15 @@ class TerrainGenerator
     // set up the probabilities of changing terrain type
     // note that the chances of not changing are left implicit so as to not require changing 2
     // numbers for each adjustment.
-    const OCEAN_TO_BEACH = 0.5;
-    const OCEAN_TO_OCEAN = 0.5;
+    const OCEAN_TO_BEACH = 0.2;
+    const OCEAN_TO_OCEAN = 0.8;
 
     const BEACH_TO_GRASS = 0.4;
     const BEACH_TO_BEACH = 0.2;
     const BEACH_TO_OCEAN = 0.4;
     
-    const GRASS_TO_BEACH = 0.5;
-    const GRASS_TO_GRASS = 0.5;
+    const GRASS_TO_BEACH = 0.2;
+    const GRASS_TO_GRASS = 0.8;
 
     public static function 
     GenerateTerrain()
