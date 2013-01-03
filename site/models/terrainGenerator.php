@@ -32,14 +32,14 @@ class TerrainGenerator
         $neighbourManager = new NeighbourManager();
     
         $neighbourManager->AddTerrainType( "ocean", new Neighbour("beach", new BeachTerrain(), self::OCEAN_TO_BEACH) );
-        $neighbourManager->AddTerrainType( "ocean", new Neighbour("ocean", new BeachTerrain(), self::OCEAN_TO_OCEAN) );
+        $neighbourManager->AddTerrainType( "ocean", new Neighbour("ocean", new OceanTerrain(), self::OCEAN_TO_OCEAN) );
 
         $neighbourManager->AddTerrainType( "beach", new Neighbour("ocean", new OceanTerrain(), self::BEACH_TO_OCEAN) );
         $neighbourManager->AddTerrainType( "beach", new Neighbour("grass", new GrassTerrain(), self::BEACH_TO_GRASS) );
-        $neighbourManager->AddTerrainType( "beach", new Neighbour("beach", new GrassTerrain(), self::BEACH_TO_BEACH) );
+        $neighbourManager->AddTerrainType( "beach", new Neighbour("beach", new BeachTerrain(), self::BEACH_TO_BEACH) );
         
         $neighbourManager->AddTerrainType( "grass", new Neighbour("beach", new BeachTerrain(), self::GRASS_TO_BEACH) );
-        $neighbourManager->AddTerrainType( "grass", new Neighbour("grass", new BeachTerrain(), self::GRASS_TO_GRASS) );
+        $neighbourManager->AddTerrainType( "grass", new Neighbour("grass", new GrassTerrain(), self::GRASS_TO_GRASS) );
 
         $neighbourManager->PopulateNeighbourObjects();
 
