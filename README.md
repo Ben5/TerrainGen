@@ -3,7 +3,7 @@ TerrainGen
 
 A little PHP app to generate and draw a 2D map consisting of different terrain types (ocean, beach, grass, etc).
 
-Requires the following lines in httpd.conf:
+This project runs on my Reverb framework, and as such requires the following lines in httpd.conf:
 
     <Directory {document root dir}>    
     RewriteEngine on
