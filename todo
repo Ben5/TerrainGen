@@ -1,0 +1,8 @@
+This is a list of all the tasks that I want to complete in the TerrainGen project:
+
+1. User Customisation - Adding the ability to tweak the dimensions, neighbour probabilities and neighbour types to the page, allowing a user to have input into the terrain that is generated.
+ - This should be achieved using AJAX rather than a traditional HTML form submission.
+
+2. Favourites - The ability to save a generated terrain map if a user chooses to do so, and reload it at any time.
+ - This probably needs to be done per user - need some sort of user registration system?
+ - Serialise the terrain and store it in MySQL DB? Implement a MongoDB and store it as a JSON blob?
