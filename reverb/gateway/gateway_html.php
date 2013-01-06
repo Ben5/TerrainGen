@@ -17,12 +17,10 @@ class GatewayHtml extends GatewayBase
             $$name = $value;
         }
 
-        if( !isset($headTitle) )
-        {
-            $headTitle = SiteConfig::DEFAULT_HEAD_TITLE;
-        }
+        $headVarString = $this->componentInstance->GetHeadVariables();
 
         include $this->siteRoot."/views/default_header.php";
+
         if(file_exists($this->siteRoot."/views/$this->componentName.css"))
         {
             $css = file_get_contents($this->siteRoot."/views/$this->componentName.css");
@@ -31,6 +29,8 @@ class GatewayHtml extends GatewayBase
         }
     
         include $this->siteRoot."/views/$this->componentName.php";
+
+        include $this->siteRoot."/views/default_footer.php";
 
     }
 

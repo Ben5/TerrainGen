@@ -2,6 +2,9 @@
 
 class ComponentBase
 {
+    private $headVars   = array();
+    private $outputVars = array();
+
     public function
     Prepare($action, $params)
     {
@@ -17,14 +20,46 @@ class ComponentBase
     protected function 
     ExposeVariable(
         $name,
-        $value )
+        $value,
+        $isHeadVar = false )
     {
-        if( isset($this->outputVars[$name]) )
+        if ($isHeadVar)
         {
-            trigger_error("duplicate outout variable: $name");
+            if (isset($this->headVars[$name]))
+            {
+                trigger_error("duplicate outout variable: $name");
+            }
+
+            $this->headVars[$name] = $value;
+        }
+        else
+        {
+            if (isset($this->outputVars[$name]))
+            {
+                trigger_error("duplicate outout variable: $name");
+            }
+
+            $this->outputVars[$name] = $value;
         }
 
-        $this->outputVars[$name] = $value;
+    }
+
+    public function
+    GetHeadVariables()
+    {
+        $headVarString = '';
+
+        if( !isset($this->headVars['title']) )
+        {
+            $this->headVars['title'] = SiteConfig::DEFAULT_HEAD_TITLE;
+        }
+
+        foreach($this->headVars as $name => $value)
+        {
+            $headVarString .= '<'.$name.'>'.$value.'</'.$name.'>';
+        }
+
+        return $headVarString;
     }
 
     public function
@@ -32,6 +67,4 @@ class ComponentBase
     {
         return $this->outputVars;
     }
-
-    private $outputVars = array();
 }
