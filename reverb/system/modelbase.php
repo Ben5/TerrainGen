@@ -8,7 +8,7 @@ abstract class ModelBase
     GetAll()
     {
         $sql = "SELECT * FROM " . static::$modelName;
-        $query = DbInterface::NewReadOnlyQuery($sql);
+        $query = DbInterface::NewQuery($sql);
 
         return $query->TryReadRowArray();
     }
@@ -17,7 +17,7 @@ abstract class ModelBase
     GetOneById($id)
     {
         $sql = "SELECT * FROM ? WHERE id = ?";
-        $query = DbInterface::NewReadOnlyQuery($sql);
+        $query = DbInterface::NewQuery($sql);
 
         $query->AddStringParam(self::$modelName);
         $query->AddIntegerParam($id);
@@ -32,7 +32,7 @@ abstract class ModelBase
                 FROM INFORMATION_SCHEMA.COLUMNS
                 WHERE TABLE_NAME = ?
                 AND COLUMN_NAME = ?";
-        $query = DbInterface::NewReadOnlyQuery($sql);
+        $query = DbInterface::NewQuery($sql);
         $query->AddStringParam(static::$modelName);
         $query->AddStringParam($columnName);
 
@@ -64,5 +64,3 @@ abstract class ModelBase
     }
 
 }
-
-?>
