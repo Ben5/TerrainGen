@@ -6,3 +6,11 @@ This is a list of all the tasks that I want to complete in the TerrainGen projec
 2. Favourites - The ability to save a generated terrain map if a user chooses to do so, and reload it at any time.
  - This probably needs to be done per user - need some sort of user registration system?
  - Serialise the terrain and store it in MySQL DB? Implement a MongoDB and store it as a JSON blob?
+
+3. Generation Algorithm Tweaking - There are a number of possible changes to the algorithm for choosing the next terrain type:
+ - Consider more than 1 previous square (if the last square was beach, and the one before that was grass, then the next one should be more likely to be ocean rather than going back to grass)
+ - 
+
+4. Performance Monitoring and Optimisation - The project has had no performance monitoring yet, and is probably inefficient. 
+ - Install xhprof and get perfmormance profile captures
+ - Investigate and Optimise whatever is slow!
