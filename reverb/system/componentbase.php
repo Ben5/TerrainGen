@@ -1,5 +1,7 @@
 <?php
 
+use TerrainGen\SiteConfig;
+
 class ComponentBase
 {
     private $headVars   = array();

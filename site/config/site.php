@@ -1,9 +1,11 @@
 <?php
 
+namespace TerrainGen;
+
 class SiteConfig
 {
-    const SITE_ROOT   = "/opt/site/site";
-    const REVERB_ROOT = "/opt/site/reverb";
+    const SITE_ROOT   = "/opt/git/TerrainGen/site";
+    const REVERB_ROOT = "/opt/git/TerrainGen/reverb";
     const DEFAULT_HEAD_TITLE = "Terrain Generator";
 
     const DB_HOST = 'localhost';

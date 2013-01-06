@@ -1,4 +1,7 @@
 <?php
+
+use TerrainGen\SiteConfig;
+
 require_once(SiteConfig::REVERB_ROOT."/system/componentbase.php");
 require_once(SiteConfig::SITE_ROOT."/models/terrainGenerator.php");
 

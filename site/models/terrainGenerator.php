@@ -1,4 +1,7 @@
 <?php
+
+use TerrainGen\SiteConfig;
+
 require_once(SiteConfig::SITE_ROOT."/models/terrainClass.php");
 require_once(SiteConfig::SITE_ROOT."/models/neighbourManager.php");
 

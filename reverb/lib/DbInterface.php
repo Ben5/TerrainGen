@@ -1,5 +1,7 @@
 <?php
 
+use TerrainGen\SiteConfig;
+
 class DbInterface
 {
     private static $connection;
