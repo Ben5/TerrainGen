@@ -10,7 +10,11 @@ class Terrain extends ComponentBase
     protected function 
     Index($params)
     {
-        $terrainArray = TerrainGenerator::GenerateTerrain();
+        $height = isset($params['height']) ? $params['height'] : null;
+        $width  = isset($params['width'])  ? $params['width']  : null;
+
+        $terrainGenerator = new TerrainGenerator();
+        $terrainArray = $terrainGenerator->GenerateTerrain($height, $width);
         $this->ExposeVariable("terrain", $terrainArray); 
     }
 }

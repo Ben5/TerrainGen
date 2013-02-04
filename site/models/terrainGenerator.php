@@ -7,8 +7,8 @@ require_once(SiteConfig::SITE_ROOT."/models/neighbourManager.php");
 
 class TerrainGenerator
 {
-    const MAP_WIDTH  = 32;
-    const MAP_HEIGHT = 32;
+    const MAP_WIDTH  = 16;
+    const MAP_HEIGHT = 16;
 
     const INITIAL_CELL_IS_OCEAN = 0.5; // these must total 1.0!
     const INITIAL_CELL_IS_BEACH = 0.1; // these must total 1.0!
@@ -27,9 +27,20 @@ class TerrainGenerator
     const GRASS_TO_BEACH = 0.2;
     const GRASS_TO_GRASS = 0.8;
 
-    public static function 
-    GenerateTerrain()
+    public function 
+    GenerateTerrain(
+        $height,
+        $width)
     {
+        if (is_null($height) || $height <= 0)
+        {
+            $height = self::MAP_HEIGHT;
+        }
+        if (is_null($width) || $width <= 0)
+        {
+            $width = self::MAP_WIDTH;
+        }
+
         $terrainArray = array();
 
         $neighbourManager = new NeighbourManager();
@@ -46,16 +57,16 @@ class TerrainGenerator
 
         $neighbourManager->PopulateNeighbourObjects();
 
-        for($heightIndex = 0; $heightIndex < self::MAP_WIDTH; $heightIndex++)
+        for($heightIndex = 0; $heightIndex < $height; $heightIndex++)
         {
-            for($widthIndex = 0; $widthIndex < self::MAP_WIDTH; $widthIndex++)
+            for($widthIndex = 0; $widthIndex < $width; $widthIndex++)
             {
                 $random = rand(1,10) / 10;
 
                 // origin square
                 if($widthIndex === 0 && $heightIndex === 0)
                 {
-                    $type = self::GenerateOriginSquare($random);
+                    $type = $this->GenerateOriginSquare($random);
                     $terrainArray[$heightIndex][$widthIndex] = $type;
                     continue;
                 }
@@ -69,15 +80,12 @@ class TerrainGenerator
                 // first square of row
                 if($widthIndex === 0)
                 {
-                    $type = self::GenerateFirstSquareInRow($random, $aboveSquare);
+                    $type = $this->GenerateFirstSquareInRow($random, $aboveSquare);
                     $terrainArray[$heightIndex][$widthIndex] = $type;
                     continue;
                 }
 
                 // all other squares
-               // $type = self::GenerateStandardSquare($random, $aboveSquare, $previousSquare);
-                //$terrainArray[$heightIndex][$widthIndex] = $type;
-
                 $neighbourType = $neighbourManager->GetNextTerrainType($random, $previousSquare, $aboveSquare);
                 $terrainArray[$heightIndex][$widthIndex] = $neighbourType;
             }
@@ -86,7 +94,7 @@ class TerrainGenerator
         return $terrainArray;
     }
 
-    private static function
+    private function
     GenerateOriginSquare(
         $random)
     {
@@ -101,7 +109,7 @@ class TerrainGenerator
         return $type;
     }
 
-    private static function
+    private function
     GenerateFirstSquareInRow(
         $random, 
         $aboveSquare)
@@ -136,126 +144,4 @@ class TerrainGenerator
         }
         return $type;
     }
-
-    private static function
-    GenerateStandardSquare(
-        $random,
-        $aboveSquare,
-        $previousSquare)
-    {
-        switch($previousSquare->GetType())
-        {
-            case "ocean":
-            {
-                // if the square above is grass, this one can't be ocean!
-                if(is_null($aboveSquare))
-                {
-                    $type = ($random < self::OCEAN_TO_BEACH ?
-                                new BeachTerrain() : 
-                                new OceanTerrain() );
-                }
-                else
-                {
-                    switch($aboveSquare->GetType())
-                    {
-                        case "grass":
-                        {
-                            $type = new BeachTerrain();
-                        }
-                        break;
-
-                        case "ocean":
-                        case "beach":
-                        {
-                            $type = ($random < self::OCEAN_TO_BEACH ?
-                                        new BeachTerrain() : 
-                                        new OceanTerrain() );
-                        }
-                        break;
-                    }
-                }
-            }
-            break;
-
-            case "beach":
-            {
-                // if the above square is ocean, then this one can't be grass
-                // if the above one is grass, then this can't be ocean
-                if(is_null($aboveSquare))
-                {
-                    $type = ($random < self::BEACH_TO_GRASS ?
-                                new GrassTerrain() : 
-                                ($random < self::BEACH_TO_GRASS + self::BEACH_TO_OCEAN ?
-                                   new OceanTerrain() : 
-                                   new BeachTerrain() ));
-                }  
-                else
-                {
-                    switch($aboveSquare->GetType())
-                    {
-                        case "ocean":
-                        {
-                            $type = ($random < self::BEACH_TO_OCEAN ?
-                                        new OceanTerrain() : 
-                                        new BeachTerrain() );
-                        }
-                        break;
-
-                        case "beach":
-                        {
-                            $type = ($random < self::BEACH_TO_GRASS ?
-                                        new GrassTerrain() : 
-                                        ($random < self::BEACH_TO_GRASS + self::BEACH_TO_OCEAN ?
-                                           new OceanTerrain() : 
-                                           new BeachTerrain() ));
-                        }
-                        break;
-
-                        case "grass":
-                        {
-                            $type = ($random < self::BEACH_TO_GRASS ?
-                                        new GrassTerrain() : 
-                                        new BeachTerrain() );
-                        }
-                        break;
-                    }
-                }
-            }
-            break;
-
-            case "grass":
-            {
-                // if the square above is ocean, this one can't be grass!
-                if(is_null($aboveSquare))
-                {
-                    $type = ($random < self::GRASS_TO_BEACH ?
-                                new BeachTerrain() : 
-                                new GrassTerrain() );
-                }
-                else
-                {
-                    switch($aboveSquare->GetType())
-                    {
-                        case "ocean":
-                        {
-                            $type = new BeachTerrain();
-                        }
-                        break;
-
-                        case "beach":
-                        case "grass":
-                        {
-                            $type = ($random < self::GRASS_TO_BEACH ?
-                                        new BeachTerrain() : 
-                                        new GrassTerrain() );
-                        }
-                        break;
-                    }
-                }
-            }
-            break;
-        }
-        return $type;
-    }
-
 }
