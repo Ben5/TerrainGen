@@ -6,11 +6,11 @@
 <div class="formContainer">
     <form class="terrainForm" name="terrainForm">
         <div class="label">Width:</div> 
-        <input id="newX" type="text" />
+        <input id="newX" type="text" value="32" />
         <br />
         
         <div class="label">Height:</div> 
-        <input id="newY" type="text" />
+        <input id="newY" type="text" value="32" />
         <br />
 
         <button id="generate" 

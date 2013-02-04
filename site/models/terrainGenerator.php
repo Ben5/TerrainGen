@@ -7,8 +7,8 @@ require_once(SiteConfig::SITE_ROOT."/models/neighbourManager.php");
 
 class TerrainGenerator
 {
-    const MAP_WIDTH  = 16;
-    const MAP_HEIGHT = 16;
+    const MAP_WIDTH  = 32;
+    const MAP_HEIGHT = 32;
 
     const INITIAL_CELL_IS_OCEAN = 0.5; // these must total 1.0!
     const INITIAL_CELL_IS_BEACH = 0.1; // these must total 1.0!
