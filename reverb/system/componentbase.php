@@ -6,11 +6,13 @@ class ComponentBase
 {
     private $headVars   = array();
     private $outputVars = array();
+    private $viewName   = null;
+    private $onlyTemplate = false;
 
     public function
     Prepare($action, $params)
     {
-        if( !method_exists($this, $action) )
+        if (!method_exists($this, $action))
         {
             trigger_error("unknown action: $action");
             exit();
@@ -29,7 +31,7 @@ class ComponentBase
         {
             if (isset($this->headVars[$name]))
             {
-                trigger_error("duplicate outout variable: $name");
+                trigger_error("duplicate output variable: $name");
             }
 
             $this->headVars[$name] = $value;
@@ -38,7 +40,7 @@ class ComponentBase
         {
             if (isset($this->outputVars[$name]))
             {
-                trigger_error("duplicate outout variable: $name");
+                trigger_error("duplicate output variable: $name");
             }
 
             $this->outputVars[$name] = $value;
@@ -51,14 +53,14 @@ class ComponentBase
     {
         $headVarString = '';
 
-        if( !isset($this->headVars['title']) )
+        if (!isset($this->headVars['title']))
         {
             $this->headVars['title'] = SiteConfig::DEFAULT_HEAD_TITLE;
         }
 
         foreach($this->headVars as $name => $value)
         {
-            $headVarString .= '<'.$name.'>'.$value.'</'.$name.'>';
+            $headVarString .= '<'.$name.'>'.$value.'</'.$name.">\n";
         }
 
         return $headVarString;
@@ -68,5 +70,29 @@ class ComponentBase
     GetExposedVariables()
     {
         return $this->outputVars;
+    }
+
+    public function
+    SetViewName($viewName)
+    {
+        $this->viewName = $viewName;
+    }
+
+    public function
+    GetViewName()
+    {
+        return $this->viewName;
+    }
+
+    public function
+    SetOnlyTemplate($onlyTemplate)
+    {
+        $this->onlyTemplate = $onlyTemplate;
+    }
+
+    public function
+    GetOnlyTemplate()
+    {
+        return $this->onlyTemplate;
     }
 }
