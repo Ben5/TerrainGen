@@ -35,23 +35,28 @@ class GatewayHtml extends GatewayBase
             $headVarString = $this->componentInstance->GetHeadVariables();
 
             // include any page-specific stylesheets
-            if(file_exists($this->siteRoot.'/views/'.$this->componentName.'.css'))
-            {
-                $css = file_get_contents($this->siteRoot.'/views/'.$this->componentName.'.css');
-
-                $headVarString .= '<style type="text/css" >'.$css."</style>\n";
+            $cssHref = '/css/'.$this->componentName.'.css';
+            if ($this->projectName != '') {
+                $cssHref = '/'.$this->projectName.$cssHref;
             }
+            $headVarString .= '<link rel="stylesheet" type="text/css" href="'.$cssHref.'" />'."\n";
 
             // Include the jquery code
-            $jquery = file_get_contents('/opt/site/reverb/lib/jquery-1.9.0.min.js');
-            $headVarString .= '<script type="text/javascript">'.$jquery."</script>\n";
+            $jqueryFiles = array('jquery-1.9.0.min.js',
+                                 'jquery-ui.min.js', 
+                                 'jquery.ui.accordion.min.js', 
+                                 );
+            foreach($jqueryFiles as $filename)
+            {
+                $headVarString .= '<script type="text/javascript" src="/js/'.$filename.'">'."</script>\n";
+            }
 
             // include any page-specific javascript
-            if(file_exists($this->siteRoot.'/views/'.$this->componentName.'.js'))
-            {
-                $javascript = file_get_contents($this->siteRoot.'/views/'.$this->componentName.'.js');
-                $headVarString .= '<script type="text/javascript">'.$javascript."</script>\n";
+            $jsSrc = '/js/'.$this->componentName.'.js';
+            if ($this->projectName != '') {
+                $jsSrc = '/'.$this->projectName.$jsSrc;
             }
+            $headVarString .= '<script type="text/javascript" src="'.$jsSrc.'"></script>'."\n";
 
             include $this->siteRoot.'/views/default_header.php';
             include $this->siteRoot.'/views/'.$viewName.'.php';

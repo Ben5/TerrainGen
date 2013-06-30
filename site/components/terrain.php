@@ -17,4 +17,15 @@ class Terrain extends ComponentBase
         $terrainArray = $terrainGenerator->GenerateTerrain($height, $width);
         $this->ExposeVariable("terrain", $terrainArray); 
     }
+
+    protected function
+    GetTerrain($params)
+    {
+        $height = isset($params['height']) ? $params['height'] : null;
+        $width  = isset($params['width'])  ? $params['width']  : null;
+
+        $terrainGenerator = new TerrainGenerator();
+        $terrainArray = $terrainGenerator->GenerateTerrain($height, $width);
+        $this->ExposeVariable("terrain", $terrainArray); 
+    }
 }
