@@ -1,0 +1,30 @@
+body {
+    font-family: sans-serif;
+    color: #000099;
+}
+
+div.terrainCell 
+{
+    width:12px;
+    height:12px;
+    float:left;
+    border-width:1px;
+    border-style:solid;
+    border-color:#555555;
+}
+
+div.grass
+{
+    background-color:#008800;
+}
+
+div.beach
+{
+    background-color:#888800;
+}
+
+div.ocean
+{
+    background-color:#000088;
+}
+
