@@ -115,23 +115,19 @@ class NeighbourManager
             }
 
             $otherNeighbours = array($this->neighbourDictionary[$otherPreviousTerrainTypeName]);
-           //print_r($neighbours);
-           //echo "<br><br>";
-           //print_r($otherNeighbours);
 
-
-//            $neighbours = array_intersect($neighbours, $otherNeighbours);
             $neighbourIntersection = array();
             
             foreach($neighbours as $neighbourArray)
             {
                 foreach($neighbourArray as $neighbour)
                 {
+                    $neighbourName = $neighbour->GetNeighbourTypeName();
                     foreach($otherNeighbours as $otherNeighbourArray)
                     {
                         foreach($otherNeighbourArray as $otherNeighbour)
                         {
-                            if($neighbour->GetNeighbourTypeName() == $otherNeighbour->GetNeighbourTypeName())
+                            if($neighbourName == $otherNeighbour->GetNeighbourTypeName())
                             {
                                 $neighbourIntersection[] = $neighbour;
                             }
